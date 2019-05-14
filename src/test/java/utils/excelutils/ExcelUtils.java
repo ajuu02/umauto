@@ -72,7 +72,7 @@ public class ExcelUtils {
         try {
             // Open the Excel file
         	System.out.println(currentDir);
-            FileInputStream ExcelFile = new FileInputStream("C:\\Users\\ajay.kumar.ram.dhani\\aplitools\\um\\dataSource\\testData.xlsx");
+            FileInputStream ExcelFile = new FileInputStream("C:\\Users\\RamDhani.Ajaykumar\\git\\umauto\\dataSource\\testData.xlsx");
             excelWBook = new XSSFWorkbook(ExcelFile);
             excelWSheet = excelWBook.getSheet(sheetName);
         } catch (Exception e) {
