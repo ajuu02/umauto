@@ -1,6 +1,6 @@
 package com.um;
 
-import org.testng.annotations.Test;
+
 
 import com.applitools.eyes.ProxySettings;
 import com.applitools.eyes.RectangleSize;
@@ -11,9 +11,6 @@ import com.applitools.eyes.selenium.StitchMode;
 
 import utils.excelutils.ExcelUtils;
 
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.BeforeTest;
-
 import java.io.FileInputStream;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -22,9 +19,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 public class HilfeUndServicesTC1 {
 	static WebDriver driver;
@@ -51,12 +51,15 @@ public class HilfeUndServicesTC1 {
 			
 		// Get Driver
 		if(browser.equals("chrome")) {
-			System.out.println(System.getProperty("user.dir")+ "driver\\chromedriver.exe");
-			System.setProperty("webdriver.chrome.driver", "C:\\Users\\RamDhani.Ajaykumar\\git\\umauto\\driver\\chromedriver.exe");
+			System.out.println(System.getProperty("user.dir")+ "/driver/chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+ "/driver/chromedriver.exe");
 			driver = new ChromeDriver();
 		}else if(browser.equals("ie")) {
-			System.setProperty("webdriver.ie.driver", "C:\\Users\\RamDhani.Ajaykumar\\git\\umauto\\driver\\IEDriverServer.exe");
+			System.setProperty("webdriver.ie.driver", System.getProperty("user.dir") + "/driver/IEDriverServer.exe");
 			driver = new InternetExplorerDriver();	
+		}else if(browser.equals("firefox")){
+			System.setProperty("webdriver.firefox.marionette", System.getProperty("user.dir") + "/driver/geckodriver");
+            driver = new FirefoxDriver();
 		}else {
 			System.out.println("wrong browser selection...");
 		}
