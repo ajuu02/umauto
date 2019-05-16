@@ -2,8 +2,10 @@
 <suite name="Suite" parallel="false">
   <test name="Test">
     <classes>
-  	  <class name="com.um.HilfeUndServices"/>
-      <class name="com.um.HilfeUndServicesEachPage"/>
+  	  <class name="com.um.HilfeUndServicesTC1"/>
+  	  <class name="com.um.HilfeUndServicesTC2"/>
+  	  <class name="com.um.HilfeUndServicesTC3"/>
+  	  <class name="com.um.HilfeUndServicesTC4"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
