@@ -13,10 +13,6 @@ import java.io.IOException;
 
 //import static tests.BaseTest.testDataExcelFileName;
 
-/**
- * Created by obaskirt on 28-Oct-17.
- * Updated by obaskirt on 02-Apr-2019
- */
 public class ExcelUtils {
     //Main Directory of the project
     public static final String currentDir = System.getProperty("user.dir");
@@ -72,7 +68,7 @@ public class ExcelUtils {
         try {
             // Open the Excel file
         	System.out.println(currentDir);
-            FileInputStream ExcelFile = new FileInputStream("C:\\Users\\RamDhani.Ajaykumar\\git\\umauto\\dataSource\\testData.xlsx");
+            FileInputStream ExcelFile = new FileInputStream(System.getProperty("user.dir")+ "/dataSource/testData.xlsx");
             excelWBook = new XSSFWorkbook(ExcelFile);
             excelWSheet = excelWBook.getSheet(sheetName);
         } catch (Exception e) {
