@@ -68,7 +68,7 @@ public class HilfeUndServicesTC2 {
 		
 		// Get Eye
 		eyes = new Eyes();
-		eyes.setProxy(new ProxySettings("http://proxy:80"));
+		//eyes.setProxy(new ProxySettings("http://proxy:80"));
 		eyes.setApiKey("mqGBBE103hV6vtjIZ7Bta6PiZIc8KEde1N9ywMdaTXliU110");
 		eyes.setLogHandler(new StdoutLogHandler(true));
 	  }

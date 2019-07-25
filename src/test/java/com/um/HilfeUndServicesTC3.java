@@ -10,6 +10,7 @@ import com.applitools.eyes.selenium.StitchMode;
 //import com.utilities.ExcelUtils;
 
 import utils.excelutils.ExcelUtils;
+import utils.excelutils.WaitMethods;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.BeforeTest;
@@ -19,11 +20,14 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 
@@ -55,20 +59,29 @@ public class HilfeUndServicesTC3 {
 			System.out.println(System.getProperty("user.dir")+ "/driver/chromedriver.exe");
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+ "/driver/chromedriver.exe");
 			driver = new ChromeDriver();
-		}else if(browser.equals("ie")) {
+		}
+		else if(browser.equals("ie")) {
 			System.setProperty("webdriver.ie.driver", System.getProperty("user.dir") + "/driver/IEDriverServer.exe");
-			driver = new InternetExplorerDriver();	
-		}else if(browser.equals("firefox")){
-			System.setProperty("webdriver.firefox.marionette", System.getProperty("user.dir") + "/driver/geckodriver");
-            driver = new FirefoxDriver();
+					
+			DesiredCapabilities capsIE = new DesiredCapabilities();
+		    capsIE.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+		    capsIE.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
+		    capsIE.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+		    driver = new InternetExplorerDriver(capsIE);
+		}
+		else if(browser.equals("firefox")){
+			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/driver/geckodriver.exe");
+		    driver = new FirefoxDriver();	
 		}else {
 			System.out.println("wrong browser selection...");
 		}
-		driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
+		
+		this.driver.manage().deleteAllCookies();
+		
 		
 		// Get Eye
 		eyes = new Eyes();
-		eyes.setProxy(new ProxySettings("http://proxy:80"));
+		//eyes.setProxy(new ProxySettings("http://proxy:80"));
 		eyes.setApiKey("mqGBBE103hV6vtjIZ7Bta6PiZIc8KEde1N9ywMdaTXliU110");
 		eyes.setLogHandler(new StdoutLogHandler(true));
 	  }
@@ -77,19 +90,21 @@ public class HilfeUndServicesTC3 {
   public void f() {
 	  try {
 		    // set Eye
-		    eyes.open(driver,"DCOMM",testCaseName, new RectangleSize(width, height));
+		   driver.manage().window().setSize(new Dimension(800, 700));
+		    eyes.setMatchTimeout(0);
+		  	eyes.open(driver,"DCOMM",testCaseName, new RectangleSize(width, height));
 			eyes.setSendDom(true);
 			eyes.setStitchMode(StitchMode.CSS);
 			eyes.setForceFullPageScreenshot(true);	
-			
+			driver.manage().window().setSize(new Dimension(800, 700));
 			driver.get(testUrl);
-			Thread.sleep(10000);
 			
-			if ((driver.findElements(By.xpath("//button[@class='gdpr_accept_all']"))).size()>0)
-			driver.findElement(By.xpath("//button[@class='gdpr_accept_all']")).click();
+			WebElement cookiesButton = driver.findElement(By.xpath("//button[@class='gdpr_accept_all']"));
+			WaitMethods.waitUntilElementIsClickable(driver, cookiesButton, 15);
+			cookiesButton.click();
+			WaitMethods.waitUntilElementDisappears(driver, cookiesButton, 15);
+			WaitMethods.waitForPageToLoad(driver, 10);
 			
-
-			Thread.sleep(10000);
 			eyes.checkWindow(testCaseName);
 			eyes.close();
 			

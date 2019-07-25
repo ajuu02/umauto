@@ -24,6 +24,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 
@@ -57,9 +58,16 @@ public class HilfeUndServicesTC4 {
 			driver = new ChromeDriver();
 		}else if(browser.equals("ie")) {
 			System.setProperty("webdriver.ie.driver", System.getProperty("user.dir") + "/driver/IEDriverServer.exe");
-			driver = new InternetExplorerDriver();	
+			
+			DesiredCapabilities capsIE = new DesiredCapabilities();
+            capsIE.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+            capsIE.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
+            capsIE.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+            driver = new InternetExplorerDriver(capsIE);
+;	
 		}else if(browser.equals("firefox")){
-			System.setProperty("webdriver.firefox.marionette", System.getProperty("user.dir") + "/driver/geckodriver");
+			//System.setProperty("webdriver.firefox.marionette", System.getProperty("user.dir") + "/driver/geckodriver");
+			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/driver/geckodriver.exe");
             driver = new FirefoxDriver();	
 		}else {
 			System.out.println("wrong browser selection...");
@@ -68,7 +76,7 @@ public class HilfeUndServicesTC4 {
 		
 		// Get Eye
 		eyes = new Eyes();
-		eyes.setProxy(new ProxySettings("http://proxy:80"));
+		//eyes.setProxy(new ProxySettings("http://proxy:80"));
 		eyes.setApiKey("mqGBBE103hV6vtjIZ7Bta6PiZIc8KEde1N9ywMdaTXliU110");
 		eyes.setLogHandler(new StdoutLogHandler(true));
 	  }
@@ -78,9 +86,9 @@ public class HilfeUndServicesTC4 {
 	  try {
 		    // set Eye
 		    eyes.open(driver,"DCOMM",testCaseName, new RectangleSize(width, height));
-			eyes.setSendDom(true);
-			eyes.setStitchMode(StitchMode.CSS);
-			eyes.setForceFullPageScreenshot(true);	
+		    eyes.setSendDom(true);
+		    eyes.setStitchMode(StitchMode.CSS);
+		    eyes.setForceFullPageScreenshot(true);	
 			
 			driver.get(testUrl);
 			Thread.sleep(10000);
@@ -100,10 +108,10 @@ public class HilfeUndServicesTC4 {
   }
   @AfterTest
   public void afterTest() {
-	  
+	  		driver.close();	  
 			driver.quit();
-			eyes.abortIfNotClosed();
-			System.exit(0);
+//			eyes.abortIfNotClosed();
+//			System.exit(0);
 		
   }
 }
